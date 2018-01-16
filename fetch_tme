@@ -1,0 +1,55 @@
+#! /bin/bash
+
+# This fetches the archives from the class website and extracts them -if possible- 
+# into their correct directory
+
+source logins
+
+echo "Fetching TMEs ..."
+
+for id_TME in $(seq 1 $NB_WEEK);
+do
+    echo -n "${id_TME}- "
+    # The archive is also the name of the php script on the lip6 server
+    ARCHIVE="archive.php?sView=all&sFormat=tar.gz&sGroup=${GROUP}&iTME=${id_TME}"
+
+    ./cas_authenticate $URL/$ARCHIVE ${USER} ${PASSWD} &> /dev/null
+    if [[ -s "$ARCHIVE" ]];
+    then
+        tar xvzf "$ARCHIVE" > /dev/null
+        echo "OK"
+    else
+        echo "NOT FOUND"
+    fi
+    rm -f "$ARCHIVE"
+done
+
+echo ""
+
+
+for line in $(cat $CSV);
+do
+    ID=$(cut -d';' -f1 <<< $line)
+    NAME=$(cut -d';' -f2 <<< $line)
+    SURNAME=$(cut -d';' -f3 <<< $line)
+    WEDNAME=$(cut -d';' -f4 <<< $line)
+    EMAIL=$(cut -d';' -f5 <<< $line)
+
+    LOWER_NAME=$(echo $NAME|tr "A-Z" "a-z")
+    LOWER_SURNAME=$(echo $SURNAME|tr "A-Z" "a-z")
+
+
+    for i in $(seq 1 $NB_WEEK);
+    do
+        if [[ -d $GROUP/TME${i}/ ]];
+        then
+            find $GROUP/TME${i}/ -name "*${LOWER_NAME}_${LOWER_SURNAME}*"|xargs cp -t students/${NAME}_${SURNAME}_${ID}/TME${i}/ &> /dev/null
+            if [[ $? != 0 ]]; then
+                echo "$NAME $SURNAME: Nothing submitted"
+            fi
+        fi
+    done
+done
+
+# This is the name of the archive downloaded
+rm -rf $GROUP/

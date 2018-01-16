@@ -1,0 +1,23 @@
+#! /bin/bash
+
+source logins
+
+# Sends a mail to each student
+
+HEADER="[1I002] "
+
+LIST_MAIL=
+
+for line in $(cat $CSV);
+do
+    EMAIL=$(cut -d';' -f5 <<< $line)
+    LIST_MAIL=$LIST_MAIL,$EMAIL
+done
+LIST_MAIL=$(sed -r 's/^,//')
+
+cat << EOF |sendEmail -f "$MYMAIL" -t "$EMAIL" -cc "$MYMAIL" -u "$HEADER" -s smtps.upmc.fr:587 -o message-charset=utf-8 -o tls=auto -xu "$USER_MAIL" -xp "$PASSWD_MAIL"
+Bonjour,
+
+Mail text here
+
+EOF

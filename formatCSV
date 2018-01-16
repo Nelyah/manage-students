@@ -1,0 +1,7 @@
+#! /bin/bash
+
+# Correct formatting of the CSV
+
+source logins
+
+sed -ri -e '1d' -e '2d' -e 's/[\ |\t]+\"/;/' -e 's/"[\ |\t]+"/;/g' -e 's/"$//' -e 's/[\ |\t]+/_/g' $CSV

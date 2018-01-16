@@ -1,0 +1,33 @@
+#! /bin/bash
+
+source logins
+HEADER="[1I002] Note TME solo 1"
+FOLDER="TME-solo1"
+
+for line in $(cat $CSV);
+do
+    ID=$(cut -d';' -f1 <<< $line)
+    NAME=$(cut -d';' -f2 <<< $line)
+    SURNAME=$(cut -d';' -f3 <<< $line)
+    EMAIL=$(cut -d';' -f5 <<< $line)
+
+    FILE_COMMENT=students/${NAME}_${SURNAME}_${ID}/$FOLDER/comments
+    if [[ -f $FILE_COMMENT ]]; then
+
+        cat << EOF |sendEmail -f "$MYMAIL" -t "$EMAIL" -cc "$MYMAIL" -u "$HEADER" -s smtps.upmc.fr:587 -o message-charset=utf-8 -o tls=auto -xu "$USER_MAIL" -xp "$PASSWD_MAIL"
+Bonjour,
+
+Vous trouverez dans cet e-mail votre note ainsi que les commentaires sur votre copie, avec le détail des points obtenus à chaque question.
+
+$(cat $FILE_COMMENT)
+
+Cordialement,
+
+---- INSERT NAME HERE ----
+EOF
+
+    else
+        echo "No such comment file: $FILE_COMMENT"
+    fi
+
+done

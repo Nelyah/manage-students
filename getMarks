@@ -1,0 +1,82 @@
+#! /bin/bash
+
+source logins
+args=$(getopt wi: $*)
+ID_TME=''
+
+for arg in $args; do
+    case $arg in
+        -w) shift; write=0;
+            ;;
+        -i) shift; ID_TME=$1; shift;
+            ;;
+    esac
+done
+
+if [[ -z $ID_TME ]]; then
+    echo "You must provide the number of the EXAM (1, 2 or 3)"
+    exit 1
+fi
+
+SUM=0
+NB_ETU=0
+HIGHEST=0
+LOWEST=100000
+
+# For each student
+for line in $(cat $CSV);
+do
+    # get info
+    ID=$(cut -d';' -f1 <<< $line)
+    NAME=$(cut -d';' -f2 <<< $line)
+    SURNAME=$(cut -d';' -f3 <<< $line)
+    WEDNAME=$(cut -d';' -f4 <<< $line)
+    EMAIL=$(cut -d';' -f5 <<< $line)
+
+    # Get file onto which we wrote our comments
+    FILE_COMMENT=students/${NAME}_${SURNAME}_${ID}/TME-solo${ID_TME}/comments
+    if [[ ! -f $FILE_COMMENT ]];
+    then
+        echo "No such file: $FILE_COMMENT"
+        continue
+    fi
+
+    NB_ETU=$((NB_ETU+1))
+
+    # Parse the file and get mark of student. TOT is the maximum amount the student can achieve
+    MARK=$(grep -E --color=never "^== Note : [0-9.]+/[0-9.]+" $FILE_COMMENT | sed -r 's|.*:\ ([0-9.]+)/([0-9.]+)*|\1\ \2|'|awk '{m+=$1}END{print m}')
+    TOT=$(grep -E --color=never "^== Note : [0-9.]+/[0-9.]+" $FILE_COMMENT | sed -r 's|.*:\ ([0-9.]+)/([0-9.]+)*|\1\ \2|'|awk '{tot+=$2}END{print tot}')
+
+    # To add a malus due to RETARD, begin a line in the following format
+    # RETARD : -2
+    if [[ ! -z $(grep -E "RETARD" $FILE_COMMENT) ]];
+    then
+        RETARD=$(grep -E "RETARD" $FILE_COMMENT|sed -r 's/.*:\ *([^\ ]+).*/\1/')
+        MARK=$(echo $MARK+$RETARD|bc)
+    fi
+    
+    if [[ $(echo "$MARK >= $HIGHEST"|bc) -eq 1 ]];
+    then
+        HIGHEST=$MARK
+    fi
+
+    if [[ $(echo "$MARK <= $LOWEST"|bc) -eq 1 ]];
+    then
+        LOWEST=$MARK
+    fi
+
+    SUM=$(echo $SUM+$MARK|bc)
+
+    echo $SURNAME $NAME: $MARK/$TOT
+
+    # Write it to the comment file
+    if [[ $write -eq 0 ]]
+    then
+        sed -ri "s|@MARK_TOT@|$MARK/$TOT|" $FILE_COMMENT
+    fi
+done
+MEAN=$(echo "scale=2; $SUM/$NB_ETU"|bc -l)
+echo "======="
+echo "MEAN: $MEAN/$TOT"
+echo "HIGHEST: $HIGHEST/$TOT"
+echo "LOWEST: $LOWEST/$TOT"

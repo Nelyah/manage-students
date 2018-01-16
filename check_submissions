@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Check if students have correctly submitted their homework
+# This will next send a mail to self listing which student didn't submit anything.
+source logins
+
+MESSAGE="Students having no submission for\n\n"
+
+for i in $(seq 1 $NB_WEEK);
+do
+    MESSAGE="${MESSAGE}WEEK $i:\n========\n"
+
+    for line in $(cat $CSV);
+    do
+        ID=$(cut -d';' -f1 <<< $line)
+        NAME=$(cut -d';' -f2 <<< $line)
+        SURNAME=$(cut -d';' -f3 <<< $line)
+        WEDNAME=$(cut -d';' -f4 <<< $line)
+        EMAIL=$(cut -d';' -f5 <<< $line)
+
+        LOWER_NAME=$(echo $NAME|tr "A-Z" "a-z")
+        LOWER_SURNAME=$(echo $SURNAME|tr "A-Z" "a-z")
+
+
+        if [[ $(ls students/${NAME}_${SURNAME}_${ID}/TME${i}/|wc -l) -eq 0 ]]; then
+            MESSAGE="${MESSAGE}$NAME $SURNAME ($ID)\n"
+        fi
+
+    done
+    MESSAGE="${MESSAGE}\n"
+done
+
+echo -e $MESSAGE|sendEmail -f $MYMAIL -t $MYMAIL -u "[1I002] Submission report $(date +"%d-%m-%Y")" -s smtps.upmc.fr:587 -o message-charset=utf-8 -o tls=auto -xu $USER_MAIL -xp $PASSWD_MAIL

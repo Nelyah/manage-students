@@ -1,0 +1,28 @@
+#! /bin/bash
+
+# To run once, creates the whole architecture according to the CSV file
+
+source logins
+
+for line in $(cat $CSV);
+do
+    echo "For line $line"
+    ID=$(cut -d';' -f1 <<< $line)
+    NAME=$(cut -d';' -f2 <<< $line)
+    SURNAME=$(cut -d';' -f3 <<< $line)
+    WEDNAME=$(cut -d';' -f4 <<< $line)
+    EMAIL=$(cut -d';' -f5 <<< $line)
+    
+    echo $ID $NAME $SURNAME $WEDNAME $EMAIL
+
+    for i in $(seq 1 $NB_WEEK);
+    do
+        mkdir -p students/${NAME}_${SURNAME}_${ID}/TME${i}
+    done
+    for i in {1..3};
+    do
+        mkdir -p students/${NAME}_${SURNAME}_${ID}/TME-solo${i}
+        cat comments_template |sed -r -e "s/@NOM@/$NAME/" -e "s/@SURNAME@/$SURNAME/" -e "s/@ID@/$ID/" -e "s/@TME@/$i/" > students/${NAME}_${SURNAME}_${ID}/TME-solo${i}/comments
+    done
+
+done
