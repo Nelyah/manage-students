@@ -10,12 +10,12 @@ This repos is made for the class UE 1I002 at UPMC. In there you will find script
 Setup:
 ------
 
-*All scripts should be executed from the git repo folder. I didn't test their behaviour outside of it.*
+__All scripts should be executed from the git repo folder. I didn't test their behaviour outside of it.__
 Two files are mandatory to have inside this directory:
-- ´logins´
-- ´${GROUP}.csv´
+- `logins`
+- `${GROUP}.csv`
 
-The ´GROUP.csv´ file can be downloaded from the [DBUFR website][1]. The ´logins´ file *must* define the following variables:
+The `GROUP.csv` file can be downloaded from the [DBUFR website][1]. The `logins` file __must__ define the following variables:
 - GROUP: The name of your group (e.g. GROUP=G22.1)
 - CSV: The name of the CSV file in the directory
 - NB_WEEK: How many weeks will there be througout this semester?
@@ -26,7 +26,7 @@ The ´GROUP.csv´ file can be downloaded from the [DBUFR website][1]. The ´logi
 Usage:
 ------
 
-Download the ´GROUP.csv´ file from [DBUFR][1] and place it in this directory. Set up all variables in the ´logins´ file correctly. Now, run:
+Download the `GROUP.csv` file from [DBUFR][1] and place it in this directory. Set up all variables in the `logins` file correctly. Now, run:
 
     ./formatCSV
 This will change the format of the CSV file to our liking as well as removing special characters.
@@ -34,20 +34,20 @@ This will change the format of the CSV file to our liking as well as removing sp
     ./setup
 This will create all subfolders for each students.
 
-If you want to send a mail to all students, edit the ´send_mail_to_students´ script and execute it.
+If you want to send a mail to all students, edit the `send_mail_to_students` script and execute it.
 
     ./send_mail_to_students
 
 To see students marks:
 
     ./get_marks -i 1
-will output marks for TME-solo1. Adding the option ´-w´ will effectively write in each student's commentary file the total note (summed of all exercises).
+will output marks for TME-solo1. Adding the option `-w` will effectively write in each student's commentary file the total note (summed of all exercises).
 Some modifications can be made to the global mark (for example: exam submitted late). This is done by adding a line beginning with "MALUS". Some reason can then be given, and the factor following the colon (:) will be applied.
 
     MALUS (Je suis de mauvaise humeur) : -6
 Will apply a -6 point malus to the global mark.
-For sending marks to students, edit the file ´send_student_mark´ accordingly then execute it.
+For sending marks to students, edit the file `send_student_mark` accordingly then execute it.
 
-By running the ´routine.sh´ script, the program will fetch every TME for each student, check their submissions and send you a report.
+By running the `routine.sh` script, the program will fetch every TME for each student, check their submissions and send you a report.
 
 [1]: https://www-dbufr.ufr-info-p6.jussieu.fr/lmd/2004/dbufr2/auths/
