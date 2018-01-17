@@ -4,9 +4,9 @@
 
 source logins
 
+echo "Creating folder 'students' for following students..."
 for line in $(cat $CSV);
 do
-    echo "For line $line"
     ID=$(cut -d';' -f1 <<< $line)
     NAME=$(cut -d';' -f2 <<< $line)
     SURNAME=$(cut -d';' -f3 <<< $line)
@@ -25,4 +25,4 @@ do
         cat comments_template |sed -r -e "s/@NOM@/$NAME/" -e "s/@SURNAME@/$SURNAME/" -e "s/@ID@/$ID/" -e "s/@TME@/$i/" > students/${NAME}_${SURNAME}_${ID}/TME-solo${i}/comments
     done
 
-done
+done | column -t

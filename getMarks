@@ -44,8 +44,8 @@ do
     NB_ETU=$((NB_ETU+1))
 
     # Parse the file and get mark of student. TOT is the maximum amount the student can achieve
-    MARK=$(grep -E --color=never "^== Note : [0-9.]+/[0-9.]+" $FILE_COMMENT | sed -r 's|.*:\ ([0-9.]+)/([0-9.]+)*|\1\ \2|'|awk '{m+=$1}END{print m}')
-    TOT=$(grep -E --color=never "^== Note : [0-9.]+/[0-9.]+" $FILE_COMMENT | sed -r 's|.*:\ ([0-9.]+)/([0-9.]+)*|\1\ \2|'|awk '{tot+=$2}END{print tot}')
+    MARK=$(grep -E --color=never "^== *Note : [0-9.]+/[0-9.]+" $FILE_COMMENT | sed -r 's|.*:\ ([0-9.]+)/([0-9.]+)*|\1\ \2|'|awk '{m+=$1}END{print m}')
+    TOT=$(grep -E --color=never "^== *Note : [0-9.]+/[0-9.]+" $FILE_COMMENT | sed -r 's|.*:\ ([0-9.]+)/([0-9.]+)*|\1\ \2|'|awk '{tot+=$2}END{print tot}')
 
     # To add a malus due to RETARD, begin a line in the following format
     # RETARD : -2
@@ -77,6 +77,6 @@ do
 done
 MEAN=$(echo "scale=2; $SUM/$NB_ETU"|bc -l)
 echo "======="
-echo "MEAN: $MEAN/$TOT"
+echo "MEAN:    $MEAN/$TOT"
 echo "HIGHEST: $HIGHEST/$TOT"
-echo "LOWEST: $LOWEST/$TOT"
+echo "LOWEST:  $LOWEST/$TOT"
