@@ -47,12 +47,12 @@ do
     MARK=$(grep -E --color=never "^== *Note : [0-9.]+/[0-9.]+" $FILE_COMMENT | sed -r 's|.*:\ ([0-9.]+)/([0-9.]+)*|\1\ \2|'|awk '{m+=$1}END{print m}')
     TOT=$(grep -E --color=never "^== *Note : [0-9.]+/[0-9.]+" $FILE_COMMENT | sed -r 's|.*:\ ([0-9.]+)/([0-9.]+)*|\1\ \2|'|awk '{tot+=$2}END{print tot}')
 
-    # To add a malus due to RETARD, begin a line in the following format
-    # RETARD : -2
-    if [[ ! -z $(grep -E "RETARD" $FILE_COMMENT) ]];
+    # To add a malus, begin a line in the following format
+    # MALUS (optional: some reason, late) : -2
+    if [[ ! -z $(grep -E "^MALUS" $FILE_COMMENT) ]];
     then
-        RETARD=$(grep -E "RETARD" $FILE_COMMENT|sed -r 's/.*:\ *([^\ ]+).*/\1/')
-        MARK=$(echo $MARK+$RETARD|bc)
+        MALUS=$(grep -E "^MALUS" $FILE_COMMENT|sed -r 's/.*:\ *([^\ ]+).*/\1/')
+        MARK=$(echo $MARK+$MALUS|bc)
     fi
     
     if [[ $(echo "$MARK >= $HIGHEST"|bc) -eq 1 ]];

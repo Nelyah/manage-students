@@ -30,4 +30,4 @@ do
     MESSAGE="${MESSAGE}\n"
 done
 
-echo -e $MESSAGE|sendEmail -f $MYMAIL -t $MYMAIL -u "[1I002] Submission report $(date +"%d-%m-%Y")" -s smtps.upmc.fr:587 -o message-charset=utf-8 -o tls=auto -xu $USER_MAIL -xp $PASSWD_MAIL
+echo -e $MESSAGE|sendEmail -f $MYMAIL -t $MYMAIL -u "[1I002] Submission report $(date +"%d-%m-%Y")" -s smtps.upmc.fr:587 -o message-charset=utf-8 -o tls=auto -xu $USER -xp $PASSWD

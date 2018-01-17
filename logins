@@ -1,0 +1,7 @@
+GROUP=G22.1
+CSV=$GROUP.csv
+NB_WEEK=11
+MYMAIL=yourmail@upmc.fr
+USER=<username for annuaire UPMC (email)>
+PASSWD=<password for annuaire UPMC (email)>
+URL_TME=http://webia.lip6.fr/~li115/enseignants

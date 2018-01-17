@@ -15,7 +15,7 @@ do
 done
 LIST_MAIL=$(sed -r 's/^,//')
 
-cat << EOF |sendEmail -f "$MYMAIL" -t "$EMAIL" -cc "$MYMAIL" -u "$HEADER" -s smtps.upmc.fr:587 -o message-charset=utf-8 -o tls=auto -xu "$USER_MAIL" -xp "$PASSWD_MAIL"
+cat << EOF |sendEmail -f "$MYMAIL" -t "$EMAIL" -cc "$MYMAIL" -u "$HEADER" -s smtps.upmc.fr:587 -o message-charset=utf-8 -o tls=auto -xu "$USER" -xp "$PASSWD"
 Bonjour,
 
 Mail text here

@@ -7,13 +7,16 @@ source logins
 
 echo "Fetching TMEs ..."
 
+ENCODED_USER=$(echo $USER | perl -p -e 's/([^A-Za-z0-9])/sprintf("%%%02X", ord($1))/seg' | sed 's/%2E/./g' | sed 's/%0A//g')
+ENCODED_PASSWD=$(echo $PASSWD | perl -p -e 's/([^A-Za-z0-9])/sprintf("%%%02X", ord($1))/seg' | sed 's/%2E/./g' | sed 's/%0A//g')
+
 for id_TME in $(seq 1 $NB_WEEK);
 do
     echo -n "${id_TME}- "
     # The archive is also the name of the php script on the lip6 server
     ARCHIVE="archive.php?sView=all&sFormat=tar.gz&sGroup=${GROUP}&iTME=${id_TME}"
 
-    ./cas_authenticate $URL/$ARCHIVE ${USER} ${PASSWD} &> /dev/null
+    ./cas_authenticate $URL_TME/$ARCHIVE ${ENCODED_USER} ${ENCODED_PASSWD} &> /dev/null
     if [[ -s "$ARCHIVE" ]];
     then
         tar xvzf "$ARCHIVE" > /dev/null
