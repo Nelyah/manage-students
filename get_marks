@@ -49,9 +49,9 @@ do
 
     # To add a malus, begin a line in the following format
     # MALUS (optional: some reason, late) : -2
-    if [[ ! -z $(grep -E "^MALUS" $FILE_COMMENT) ]];
+    if [[ ! -z $(grep -Ei "^MALUS" $FILE_COMMENT) ]];
     then
-        MALUS=$(grep -E "^MALUS" $FILE_COMMENT|sed -r 's/.*:\ *([^\ ]+).*/\1/')
+        MALUS=$(grep -Ei "^MALUS" $FILE_COMMENT|sed -r 's/.*:\ *([^\ ]+).*/\1/')
         MARK=$(echo $MARK+$MALUS|bc)
     fi
     

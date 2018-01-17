@@ -1,7 +1,7 @@
 Manage Students scripts
 =======================
 
-This repos is made for the class UE 1I002 at UPMC. In there you will find scripts allowing you to perform various task teacher-related:
+This repos is made for the class UE 1I002 at UPMC. In there you will find scripts allowing you to perform various teacher-related tasks:
 * Create for each student a separate folder containing all of their submitted TMEs
 * Check submissions of each student, with the possibility to get a mail report
 * Mailing individually each student with all comments made during the correction
@@ -11,17 +11,18 @@ Setup:
 ------
 
 __All scripts should be executed from the git repo folder. I didn't test their behaviour outside of it.__
+
 Two files are mandatory to have inside this directory:
 - `logins`
 - `${GROUP}.csv`
 
 The `GROUP.csv` file can be downloaded from the [DBUFR website][1]. The `logins` file __must__ define the following variables:
-- GROUP: The name of your group (e.g. GROUP=G22.1)
-- CSV: The name of the CSV file in the directory
-- NB_WEEK: How many weeks will there be througout this semester?
-- USER_MAIL: CAS authentication login (used to connect to UPMC mailserver to send mails)
-- PASSWD_MAIL: CAS authentication password (same reason)
-- URL_TME: You should be able to leave it to default (http://webia.lip6.fr/~li115/enseignants)
+- `GROUP`: The name of your group (e.g. `GROUP=G22.1`)
+- `CSV`: The name of the CSV file in the directory
+- `NB_WEEK`: How many weeks will there be througout this semester?
+- `USER_MAIL`: CAS authentication login (used to connect to UPMC mailserver to send mails)
+- `PASSWD_MAIL`: CAS authentication password (same reason)
+- `URL_TME`: You should be able to leave it to default (http://webia.lip6.fr/~li115/enseignants)
 
 Usage:
 ------
@@ -42,7 +43,8 @@ To see students marks:
 
     ./get_marks -i 1
 will output marks for TME-solo1. Adding the option `-w` will effectively write in each student's commentary file the total note (summed of all exercises).
-Some modifications can be made to the global mark (for example: exam submitted late). This is done by adding a line beginning with "MALUS". Some reason can then be given, and the factor following the colon (:) will be applied.
+
+Some modifications can be made to the global mark (e.g. exam submitted late). This is done by adding a line beginning with "MALUS". Some reason may then be given, and the factor following the colon (`:`) will be applied.
 
     MALUS (Je suis de mauvaise humeur) : -6
 Will apply a -6 point malus to the global mark.
