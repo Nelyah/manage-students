@@ -20,8 +20,8 @@ The `GROUP.csv` file can be downloaded from the [DBUFR website][1]. The `logins`
 - `GROUP`: The name of your group (e.g. `GROUP=G22.1`)
 - `CSV`: The name of the CSV file in the directory
 - `NB_WEEK`: How many weeks will there be througout this semester?
-- `USER_MAIL`: CAS authentication login (used to connect to UPMC mailserver to send mails)
-- `PASSWD_MAIL`: CAS authentication password (same reason)
+- `USER`: CAS authentication login (used to connect to UPMC mailserver to send mails)
+- `PASSWD`: CAS authentication password (same reason)
 - `URL_TME`: You should be able to leave it to default (http://webia.lip6.fr/~li115/enseignants)
 
 Usage:
