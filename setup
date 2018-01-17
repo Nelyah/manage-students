@@ -2,6 +2,12 @@
 
 # To run once, creates the whole architecture according to the CSV file
 
+if [[ ! -f logins ]]; then
+    echo "Couldn't find the file 'logins'."
+    echo "exiting..."
+    exit 1
+fi
+
 source logins
 
 echo "Creating folder 'students' for following students..."
