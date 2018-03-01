@@ -1,0 +1,10 @@
+#! /bin/bash
+
+# Correct formatting of the CSV
+
+source logins
+
+sed -ri -e 's/\t/;/g' -e 's/^[^;]+;//' -e 's/\ *,\ */-/g' -e 's/\ /_/g' $CSV
+
+# removing accents and non standard characters
+iconv -f latin1 -t ASCII//TRANSLIT -o $CSV $CSV
